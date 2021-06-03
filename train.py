@@ -19,7 +19,7 @@ from tensorboardX import SummaryWriter
 ## =========================== Parameters =================
 parser = argparse.ArgumentParser(description="Domian transfer on depth estimation.")
 parser.add_argument('--start-epoch', default=0, type=int, help='manual epoch number (useful on restarts)')
-parser.add_argument('--epochs', default=40, type=int, help='number of total epochs to run')		
+parser.add_argument('--epochs', default=120, type=int, help='number of total epochs to run')		
 parser.add_argument('--syn_dataset', type=str, default='VKITTI', help='synthetic domain')                       # *******
 parser.add_argument('--syn_root',  type=str, default='', help='path to source dataset.')                        # *******
 parser.add_argument('--syn_train_datafile', type=str, default='', help='stores data list, in syn_root')         # *******

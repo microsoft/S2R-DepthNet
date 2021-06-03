@@ -123,6 +123,69 @@ def kitti_compute_metrics(pred, gt):
 
 	return [abs_rel, sq_rel, rmse, rmse_log, a1, a2, a3]
 
+def nyu_compute_metrics(pred, gt):
+	"""
+	This function computes the metrics value on a pair of (pred, gt).
+	Note that the input 'pred' and 'gt' are both nparraies
+	Return a list of result float-values which correspond to MAE, MSE, RMSE, and a1, a2, a3
+	"""
+	# test image pre-processing 
+	pred, gt = nyu_metrics_preprocess(pred, gt)
+	#print("pred:", pred)
+	#print("gt:", gt)
+	#print("++++++++++++++++++++++++++++++++==")
+
+	## compute MSE and RMSE
+	mse = ((gt - pred) ** 2).mean()
+	rmse = np.sqrt(mse)
+
+	#print("rmse:", rmse)
+	
+	rmse_log = (np.log(gt) - np.log(pred)) ** 2
+	rmse_log = np.sqrt(rmse_log.mean())
+
+	# compute ap accuarcy
+	thresh = np.maximum((gt/pred), (pred/gt))
+	a1 = (thresh < 1.25).mean()
+	a2 = (thresh < 1.25 ** 2).mean()
+	a3 = (thresh < 1.25 ** 3).mean()
+
+	abs_rel = np.mean((np.abs(gt - pred) / gt))
+	sq_rel = np.mean(((gt - pred) ** 2) / gt)
+	#print("sq_rel:", sq_rel)
+	print(abs_rel, sq_rel, rmse, rmse_log, a1, a2, a3)
+
+	return [abs_rel, sq_rel, rmse, rmse_log, a1, a2, a3]
+
+
+def nyu_metrics_preprocess(pred, gt):
+	'''
+	This function do some preprocessing before metrics calculation
+	- check zero value to avoid numerical problems;
+	-
+	Note that the input 'pred' and 'gt' are both 4D nparraies
+	return the corresponding image pair 
+	'''
+	# squeeze the first and last idx(which is one in test processing)
+
+	pred = np.squeeze(pred)
+	gt = np.squeeze(gt)
+	#print("gt1:", gt)
+
+
+	min_depth = 1e-3
+	max_depth = 8
+	pred[pred < min_depth] = min_depth
+	pred[pred > max_depth] = max_depth
+
+	mask = np.logical_and(gt > min_depth, gt < max_depth)
+
+	scalor = np.median(gt[mask])/np.median(pred[mask])
+	pred[mask] *= scalor
+		# gtiheight, gt_width = gt.shape
+
+	#print("gt2:", gt[mask])
+	return pred[mask], gt[mask]
 
 
 def main():
@@ -231,6 +294,64 @@ def main():
 		f.write("after %d iteration \n\n" % (step))
 		save_test(f, result_log)
 		f.close()
+
+
+	if args.dataset == "NYUD_V2":
+		Shared_Struct_Encoder.eval()
+		Struct_Decoder.eval()
+		DSAModle.eval()
+		DepthNet.eval()
+
+		result_log = [[] for i in range(7)]
+		#print("*************************************8")
+		step = 0
+		for i, real_batched in enumerate(real_loader):
+			print("step:", step+1)
+			image, depth_ = real_batched['img'], real_batched['depth']
+
+			image = torch.autograd.Variable(image).cuda()
+			depth_ = torch.autograd.Variable(depth_).cuda()
+
+
+			# predict
+			#print("image:", image.shape)
+			struct_code = Shared_Struct_Encoder(image)
+			structure_map = Struct_Decoder(struct_code)
+			attention_map = DSAModle(image)
+			depth_specific_structure = attention_map * structure_map
+			pred_depth = DepthNet(depth_specific_structure)
+			pred_depth = torch.nn.functional.interpolate(pred_depth[-1], size=[depth_.size(2),depth_.size(3)], mode='bilinear',align_corners=True)
+			
+
+			pred_depth_np = np.squeeze(pred_depth.cpu().detach().numpy())
+			gt_np = np.squeeze(depth_.cpu().detach().numpy())
+			#depth_interp_np = np.squeeze(depth_interp_.cpu().detach().numpy())
+
+			pred_depth_np += 1.0
+			pred_depth_np /= 2.0
+			pred_depth_np *= 8.0
+			gt_np /= 1000.0
+
+
+			test_result = nyu_compute_metrics(pred_depth_np, gt_np)   # list1 
+
+			for it, item in enumerate(test_result):
+
+				result_log[it].append(item)
+
+			#mpimg.imsave(args.out_dir+'/pred_depth_%02d.png'%i, pred_depth_np, cmap="jet")
+			#mpimg.imsave(args.out_dir+'/gt_depth_%02d.png'%i, gt_np, cmap='jet')
+			#mpimg.imsave(args.out_dir+'/diff_%02d.png'%i, np.abs(gt_np-pred_depth_np))
+			step = step + 1
+
+
+		f = open(args.out_dir + "/evalog.txt", 'w')
+		f.write('Done testing -- epoch limit reached')
+		f.write("after %d iteration \n\n" % (step))
+		save_test(f, result_log)
+		f.close()
+
+
 	
 if __name__ == '__main__':
 	main()
