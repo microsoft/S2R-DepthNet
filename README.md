@@ -18,6 +18,15 @@ This is the official PyTorch implementation of the paper [***S2R-DepthNet: Learn
 Human can infer the 3D geometry of a scene from a sketch instead of a realistic image, which indicates that the spatial structure plays a fundamental role in understanding the depth of scenes. We are the first to explore the learning of a depth-specific structural representation, which captures the essential feature for depth estimation and ignores irrelevant style information. Our S2R-DepthNet (Synthetic to Real DepthNet) can be well generalized to unseen real-world data directly even though it is only trained on synthetic data. S2R-DepthNet consists of: a) a Structure Extraction (STE) module which extracts a domaininvariant structural representation from an image by disentangling the image into domain-invariant structure and domain-specific style components, b) a Depth-specific Attention (DSA) module, which learns task-specific knowledge to suppress depth-irrelevant structures for better depth estimation and generalization, and c) a depth prediction module (DP) to predict depth from the depth-specific representation. Without access of any real-world images, our method even outperforms the state-of-the-art unsupervised domain adaptation methods which use real-world images of the target domain for training. In addition, when using a small amount of labeled real-world data, we achieve the state-ofthe-art performance under the semi-supervised setting.
 ![figure](./img/overview.png)
 
+## Usage
+### Dependencies
+- [Python3.6.9](https://www.python.org/downloads/)
+- [PyTorch(1.7.1)](https://pytorch.org/)
+- [torchvision(0.8.2+cu101)](https://pypi.org/project/torchvision/)
+- [TensorboardX(2.1)](https://pypi.org/project/tensorboardX/)
+- [matplotlib(3.3.4)](https://matplotlib.org/)
+- [Pillow(8.1.2)](https://pypi.org/project/Pillow/)
+
 ## Datasets
 The outdoor Synthetic Dataset is [vKITTI](http://www.europe.naverlabs.com/Research/Computer-Vision/Proxy-Virtual-Worlds) and outdoor Real dataset is [KITTI](http://www.cvlibs.net/datasets/kitti/)
 
@@ -68,8 +77,8 @@ Use the following command to evaluate the trained S2RDepthNet on NYUD-v2 test da
 			--DSAModle_path "the path of pretrained DSAModle(.pth)"
 			--DepthNet_path "the path of pretrained DepthNet(.pth)"
 			--out_dir "Path to save results"
-			
-			
-						       
+	
+## Acknowledgement
+We borrowed code from [GASDA](https://github.com/sshan-zhao/GASDA), [VisualizationOC](https://github.com/JunjH/Visualizing-CNNs-for-monocular-depth-estimation).
 						       
 						                      
