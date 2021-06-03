@@ -53,7 +53,9 @@ Use the following command to evaluate the trained S2RDepthNet on KITTI test data
 			--DSAModle_path "the path of pretrained DSAModle(.pth)"
 			--DepthNet_path "the path of pretrained DepthNet(.pth)"
 			--out_dir "Path to save results"
+			
 Use the following command to evaluate the trained S2RDepthNet on NYUD-v2 test data.<br>
+
 	 python test.py --dataset NYUD_V2
 	 		--root "the path of NYUD_V2 dataset"
 			--test_datafile datasets/nyudv2/nyu2_test.csv
