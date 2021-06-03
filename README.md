@@ -79,6 +79,6 @@ Use the following command to evaluate the trained S2RDepthNet on NYUD-v2 test da
 			--out_dir "Path to save results"
 	
 ## Acknowledgement
-We borrowed code from [GASDA](https://github.com/sshan-zhao/GASDA), [VisualizationOC](https://github.com/JunjH/Visualizing-CNNs-for-monocular-depth-estimation).
+We borrowed code from [GASDA](https://github.com/sshan-zhao/GASDA) and [VisualizationOC](https://github.com/JunjH/Visualizing-CNNs-for-monocular-depth-estimation).
 						       
 						                      
