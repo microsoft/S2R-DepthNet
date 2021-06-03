@@ -34,49 +34,33 @@ The outdoor Synthetic Dataset is [vKITTI](http://www.europe.naverlabs.com/Resear
 As an example, use the following command to train S2RDepthNet on vKITTI.<br>
 #### *Train Structure Decoder*
 
-	python train.py --syn_dataset VKITTI
-		        --syn_root "the path of vKITTI dataset"
-		        --syn_train_datafile datasets/vkitti/train.txt
-		        --batchSize 32
-		        --loadSize 192 640
-		        --Shared_Struct_Encoder_path "the path of pretrained Struct encoder(.pth)"
-		        --trian_stage TrainStructDecoder
+	python train.py --syn_dataset VKITTI         \            
+		        --syn_root "the path of vKITTI dataset"           \
+		        --syn_train_datafile datasets/vkitti/train.txt    \
+		        --batchSize 32           \
+		        --loadSize 192 640       \          
+		        --Shared_Struct_Encoder_path "the path of pretrained Struct encoder(.pth)" \
+		        --trian_stage TrainStructDecoder                  
 			
 #### *Train DSA Module and DP module*
 
-	python train.py --syn_dataset VKITTI
-		        --syn_root "the path of vKITTI dataset"
-		        --syn_train_datafile datasets/vkitti/train.txt
-		        --batchSize 32
-		        --loadSize 192 640
-		        --Shared_Struct_Encoder_path "the path of pretrained Struct encoder(.pth)"
-			--Struct_Decoder_path "the path of pretrained Structure decoder(.pth)"
-		        --trian_stage TrainDSAandDPModule
+	python train.py --syn_dataset VKITTI         \
+		        --syn_root "the path of vKITTI dataset"           \
+		        --syn_train_datafile datasets/vkitti/train.txt    \
+		        --batchSize 32           \
+		        --loadSize 192 640       \
+		        --Shared_Struct_Encoder_path "the path of pretrained Struct encoder(.pth)" \
+			--Struct_Decoder_path "the path of pretrained Structure decoder(.pth)"     \
+		        --trian_stage TrainDSAandDPModule 
 	
 ### Evaluation
 Use the following command to evaluate the trained S2RDepthNet on KITTI test data.<br>
 
-	 python test.py --dataset KITTI
-	 		--root "the path of kitti dataset"
-			--test_datafile datasets/kitti/test.txt
-			--loadSize 192 640
-			--Shared_Struct_Encoder_path "the path of pretrained Struct encoder(.pth)"
-			--Struct_Decoder_path "the path of pretrained Structure decoder(.pth)"
-			--DSAModle_path "the path of pretrained DSAModle(.pth)"
-			--DepthNet_path "the path of pretrained DepthNet(.pth)"
-			--out_dir "Path to save results"
+	 python test.py --dataset KITTI --root "the path of kitti dataset" --test_datafile datasets/kitti/test.txt --loadSize 192 640 --Shared_Struct_Encoder_path "the path of pretrained Struct encoder(.pth)" --Struct_Decoder_path "the path of pretrained Structure decoder(.pth)" --DSAModle_path "the path of pretrained DSAModle(.pth)" --DepthNet_path "the path of pretrained DepthNet(.pth)" --out_dir "Path to save results"
 			
 Use the following command to evaluate the trained S2RDepthNet on NYUD-v2 test data.<br>
 
-	 python test.py --dataset NYUD_V2
-	 		--root "the path of NYUD_V2 dataset"
-			--test_datafile datasets/nyudv2/nyu2_test.csv
-			--loadSize 192 256
-			--Shared_Struct_Encoder_path "the path of pretrained Struct encoder(.pth)"
-			--Struct_Decoder_path "the path of pretrained Structure decoder(.pth)"
-			--DSAModle_path "the path of pretrained DSAModle(.pth)"
-			--DepthNet_path "the path of pretrained DepthNet(.pth)"
-			--out_dir "Path to save results"
+	 python test.py --dataset NYUD_V2 --root "the path of NYUD_V2 dataset" --test_datafile datasets/nyudv2/nyu2_test.csv --loadSize 192 256 --Shared_Struct_Encoder_path "the path of pretrained Struct encoder(.pth)" --Struct_Decoder_path "the path of pretrained Structure decoder(.pth)" --DSAModle_path "the path of pretrained DSAModle(.pth)" --DepthNet_path "the path of pretrained DepthNet(.pth)" --out_dir "Path to save results"
 	
 ## Acknowledgement
 We borrowed code from [GASDA](https://github.com/sshan-zhao/GASDA) and [VisualizationOC](https://github.com/JunjH/Visualizing-CNNs-for-monocular-depth-estimation).
