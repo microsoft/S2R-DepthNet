@@ -21,7 +21,7 @@ Human can infer the 3D geometry of a scene from a sketch instead of a realistic 
 ![figure](./img/overview.png)
 <br>
 #### Examples of Depth-specific Structural Representation.<br>
-<div align=center><img width="822" height="469" src="./img/intro.png"/></div>
+<div align=center><img width="822" height="469" src="./img/intro.PNG"/></div>
 
 
 ## Usage
