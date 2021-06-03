@@ -39,6 +39,8 @@ The outdoor Synthetic Dataset is [vKITTI](http://www.europe.naverlabs.com/Resear
 ## TODO
 
 - [x] Trianing Structure Encoder
+## Pretrained Models
+We also provide our trained models for inference(outdoor and indoor scenes). [link](https://1drv.ms/u/s!AlwUS_9Kpa8qgkb9ldQbMAMgNd_I?e=aX2PWY)
 
 ### Train
 As an example, use the following command to train S2RDepthNet on vKITTI.<br>
