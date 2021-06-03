@@ -34,23 +34,23 @@ The outdoor Synthetic Dataset is [vKITTI](http://www.europe.naverlabs.com/Resear
 As an example, use the following command to train S2RDepthNet on vKITTI.<br>
 #### *Train Structure Decoder*
 
-	python train.py --syn_dataset VKITTI         \            
-		        --syn_root "the path of vKITTI dataset"           \
-		        --syn_train_datafile datasets/vkitti/train.txt    \
-		        --batchSize 32           \
-		        --loadSize 192 640       \          
+	python train.py --syn_dataset VKITTI \            
+		        --syn_root "the path of vKITTI dataset" \
+		        --syn_train_datafile datasets/vkitti/train.txt \
+		        --batchSize 32 \
+		        --loadSize 192 640 \          
 		        --Shared_Struct_Encoder_path "the path of pretrained Struct encoder(.pth)" \
 		        --trian_stage TrainStructDecoder                  
 			
 #### *Train DSA Module and DP module*
 
-	python train.py --syn_dataset VKITTI         \
-		        --syn_root "the path of vKITTI dataset"           \
-		        --syn_train_datafile datasets/vkitti/train.txt    \
-		        --batchSize 32           \
-		        --loadSize 192 640       \
+	python train.py --syn_dataset VKITTI \
+		        --syn_root "the path of vKITTI dataset" \
+		        --syn_train_datafile datasets/vkitti/train.txt \
+		        --batchSize 32 \
+		        --loadSize 192 640 \
 		        --Shared_Struct_Encoder_path "the path of pretrained Struct encoder(.pth)" \
-			--Struct_Decoder_path "the path of pretrained Structure decoder(.pth)"     \
+			--Struct_Decoder_path "the path of pretrained Structure decoder(.pth)" \
 		        --trian_stage TrainDSAandDPModule 
 	
 ### Evaluation
