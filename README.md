@@ -36,6 +36,10 @@ Human can infer the 3D geometry of a scene from a sketch instead of a realistic 
 ## Datasets
 The outdoor Synthetic Dataset is [vKITTI](http://www.europe.naverlabs.com/Research/Computer-Vision/Proxy-Virtual-Worlds) and outdoor Real dataset is [KITTI](http://www.cvlibs.net/datasets/kitti/)
 
+## TODO
+
+- [x] Trianing Structure Encoder
+
 ### Train
 As an example, use the following command to train S2RDepthNet on vKITTI.<br>
 #### *Train Structure Decoder*
