@@ -41,7 +41,30 @@ As an example, use the following command to train S2RDepthNet on vKITTI.<br>
 			--Struct_Decoder_path "the path of pretrained Structure decoder(.pth)"
 		        --trian_stage TrainDSAandDPModule
 	
-						       
+### Evaluation
+Use the following command to evaluate the trained S2RDepthNet on KITTI test data.<br>
+
+	 python test.py --dataset KITTI
+	 		--root "the path of kitti dataset"
+			--test_datafile datasets/kitti/test.txt
+			--loadSize 192 640
+			--Shared_Struct_Encoder_path "the path of pretrained Struct encoder(.pth)"
+			--Struct_Decoder_path "the path of pretrained Structure decoder(.pth)"
+			--DSAModle_path "the path of pretrained DSAModle(.pth)"
+			--DepthNet_path "the path of pretrained DepthNet(.pth)"
+			--out_dir "Path to save results"
+Use the following command to evaluate the trained S2RDepthNet on NYUD-v2 test data.<br>
+	 python test.py --dataset NYUD_V2
+	 		--root "the path of NYUD_V2 dataset"
+			--test_datafile datasets/nyudv2/nyu2_test.csv
+			--loadSize 192 256
+			--Shared_Struct_Encoder_path "the path of pretrained Struct encoder(.pth)"
+			--Struct_Decoder_path "the path of pretrained Structure decoder(.pth)"
+			--DSAModle_path "the path of pretrained DSAModle(.pth)"
+			--DepthNet_path "the path of pretrained DepthNet(.pth)"
+			--out_dir "Path to save results"
+			
+			
 						       
 						       
 						                      
