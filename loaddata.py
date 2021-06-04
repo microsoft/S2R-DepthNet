@@ -1,3 +1,4 @@
+# https://docs.opensource.microsoft.com/content/releasing/copyright-headers.html
 import os 
 import torch
 import random
