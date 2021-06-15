@@ -17,10 +17,8 @@ import matplotlib.pyplot as plt
 import matplotlib.image as mpimg
 
 from torch.autograd import Variable
-#import torchvision.utils as vutils
 import torch.backends.cudnn as cudnn
 
-import net_mask
 plt.switch_backend('agg')
 plt.set_cmap("jet")
 
@@ -304,7 +302,7 @@ def main():
 		DepthNet.eval()
 
 		result_log = [[] for i in range(7)]
-		#print("*************************************8")
+
 		step = 0
 		for i, real_batched in enumerate(real_loader):
 			print("step:", step+1)
@@ -313,9 +311,6 @@ def main():
 			image = torch.autograd.Variable(image).cuda()
 			depth_ = torch.autograd.Variable(depth_).cuda()
 
-
-			# predict
-			#print("image:", image.shape)
 			struct_code = Shared_Struct_Encoder(image)
 			structure_map = Struct_Decoder(struct_code)
 			attention_map = DSAModle(image)
@@ -326,7 +321,6 @@ def main():
 
 			pred_depth_np = np.squeeze(pred_depth.cpu().detach().numpy())
 			gt_np = np.squeeze(depth_.cpu().detach().numpy())
-			#depth_interp_np = np.squeeze(depth_interp_.cpu().detach().numpy())
 
 			pred_depth_np += 1.0
 			pred_depth_np /= 2.0
@@ -340,9 +334,6 @@ def main():
 
 				result_log[it].append(item)
 
-			#mpimg.imsave(args.out_dir+'/pred_depth_%02d.png'%i, pred_depth_np, cmap="jet")
-			#mpimg.imsave(args.out_dir+'/gt_depth_%02d.png'%i, gt_np, cmap='jet')
-			#mpimg.imsave(args.out_dir+'/diff_%02d.png'%i, np.abs(gt_np-pred_depth_np))
 			step = step + 1
 
 
