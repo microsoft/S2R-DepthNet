@@ -37,8 +37,8 @@ parser.add_argument('--Shared_Struct_Encoder_path', type=str, default='', help='
 parser.add_argument('--Struct_Decoder_path', type=str, default='', help="the path of Struct_Decoder")
 parser.add_argument('--lr_policy', type=str, default='step', help='learning rate policy: lambda|step|plateau')
 parser.add_argument('--lr_decay_iters', type=int, default=10, help='multiply by a gamma every lr_decay_iters iterations')
-parser.add_argument('--lambda_w', type=float, default=0.001, help='the weight parameters of structure map.')
-parser.add_argument('--hyper_w', type=float, default=1.0, help='the weight parameters.')
+parser.add_argument('--lambda_w', type=float, default=1.0, help='the weight parameters of structure map.')
+parser.add_argument('--hyper_w', type=float, default=0.001, help='the weight parameters.')
 parser.add_argument('--trian_stage', type=str, default='TrainStructDecoder', help='train stage(TrainStructDecoder/TrainDSAandDPModule).')
 
 
