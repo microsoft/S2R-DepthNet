@@ -39,7 +39,7 @@ parser.add_argument('--lr_policy', type=str, default='step', help='learning rate
 parser.add_argument('--lr_decay_iters', type=int, default=10, help='multiply by a gamma every lr_decay_iters iterations')
 parser.add_argument('--lambda_w', type=float, default=1.0, help='the weight parameters of structure map.')
 parser.add_argument('--hyper_w', type=float, default=0.001, help='the weight parameters.')
-parser.add_argument('--trian_stage', type=str, default='TrainStructDecoder', help='train stage(TrainStructDecoder/TrainDSAandDPModule).')
+parser.add_argument('--train_stage', type=str, default='TrainStructDecoder', help='train stage(TrainStructDecoder/TrainDSAandDPModule).')
 
 
 def main():
@@ -90,7 +90,7 @@ def main():
 	cudnn.enabled = True
 	cudnn.benchmark = True
 
-	if args.trian_stage == 'TrainStructDecoder':
+	if args.train_stage == 'TrainStructDecoder':
 		## Load pretrained shared_geo_encoder
 		Shared_Struct_Encoder.load_state_dict(torch.load(args.Shared_Struct_Encoder_path))
 
@@ -111,7 +111,7 @@ def main():
 			Struct_Decoder = Struct_Decoder.cuda()
 			DepthNet = DepthNet.cuda()
 		
-	elif args.trian_stage == 'TrainDSAandDPModule':
+	elif args.train_stage == 'TrainDSAandDPModule':
 		## Load pretrained shared_geo_encoder
 		Shared_Struct_Encoder.load_state_dict(torch.load(args.Shared_Struct_Encoder_path))
 
@@ -138,10 +138,10 @@ def main():
 		## Load Struct_Decoder
 		Struct_Decoder.load_state_dict(torch.load(args.Struct_Decoder_path))
 
-	if args.trian_stage == 'TrainStructDecoder':
+	if args.train_stage == 'TrainStructDecoder':
 		# =============================== Optim ============================================
 		optimizer = torch.optim.Adam(itertools.chain(Struct_Decoder.parameters(), DepthNet.parameters()), lr=args.lr, betas=(0.9, 0.999))
-	elif args.trian_stage == 'TrainDSAandDPModule':
+	elif args.train_stage == 'TrainDSAandDPModule':
 		# =============================== Optim ============================================
 		optimizer = torch.optim.Adam(itertools.chain(DSAModle.parameters(), DepthNet.parameters()), lr=args.lr, betas=(0.9, 0.999))
 
@@ -159,12 +159,12 @@ def main():
 		batch_time = AverageMeter()
 		losses = AverageMeter()
 
-		if args.trian_stage == 'TrainStructDecoder':
+		if args.train_stage == 'TrainStructDecoder':
 			Shared_Struct_Encoder.eval()
 			Struct_Decoder.train()
 			DepthNet.train()
 
-		elif args.trian_stage == 'TrainDSAandDPModule':
+		elif args.train_stage == 'TrainDSAandDPModule':
 			Shared_Struct_Encoder.eval()
 			Struct_Decoder.eval()
 			DSAModle.train()
@@ -178,21 +178,21 @@ def main():
 
 			image = torch.autograd.Variable(image).cuda()       # image
 			depth = torch.autograd.Variable(depth).cuda()       # depth
-			if args.trian_stage == 'TrainStructDecoder':
+			if args.train_stage == 'TrainStructDecoder':
  				# Fix Shared Structure Encoder
 				struct_code = Shared_Struct_Encoder(image).detach()
-			elif args.trian_stage == 'TrainDSAandDPModule':
+			elif args.train_stage == 'TrainDSAandDPModule':
 				# Fix Shared Structure Encoder
 				struct_code = Shared_Struct_Encoder(image).detach()
 				structure_map = Struct_Decoder(struct_code).detach()
 				
 			optimizer.zero_grad()
 
-			if args.trian_stage == 'TrainStructDecoder':
+			if args.train_stage == 'TrainStructDecoder':
 				structure_map = Struct_Decoder(struct_code)
 				pred_depth = DepthNet(structure_map)
 
-			elif args.trian_stage == 'TrainDSAandDPModule':
+			elif args.train_stage == 'TrainDSAandDPModule':
 				attention_map = DSAModle(image)
 				depth_specific_structure = attention_map * structure_map
 				pred_depth = DepthNet(depth_specific_structure)
@@ -202,10 +202,10 @@ def main():
 
 
 			depth_loss = train_loss.depth_loss(pred_depth, gt_depth)
-			if args.trian_stage == 'TrainStructDecoder':
+			if args.train_stage == 'TrainStructDecoder':
 				struct_weighted_loss = train_loss.struct_weighted_loss(structure_map, depth, train_iteration, args.hyper_w)
 				total_loss = depth_loss + args.lambda_w * struct_weighted_loss
-			elif args.trian_stage == 'TrainDSAandDPModule':
+			elif args.train_stage == 'TrainDSAandDPModule':
 				total_loss = depth_loss
 
 			losses.update(total_loss.item(), image.size(0))
@@ -220,14 +220,14 @@ def main():
 				writer.add_scalar('train/total_loss', total_loss, train_iteration)
 				writer.add_scalar('train/batches_loss_avg', losses.avg, train_iteration)
 				writer.add_scalar('train/depth_loss', depth_loss, train_iteration)
-				if args.trian_stage == 'TrainStructDecoder':
+				if args.train_stage == 'TrainStructDecoder':
 					writer.add_scalar('train/struct_weighted_loss', struct_weighted_loss, train_iteration)
 
 				writer.add_image('train/image', vutils.make_grid(image*0.5+0.5), train_iteration)
 				writer.add_image('train/pred_depth', vutils.make_grid(colormap(pred_depth[-1])), train_iteration)
 				writer.add_image('train/depth_gt', vutils.make_grid(colormap(depth)), train_iteration)
 				writer.add_image('train/structure_map', vutils.make_grid(colormap(structure_map, 'viridis')), train_iteration)
-				if args.trian_stage == 'TrainDSAandDPModule':
+				if args.train_stage == 'TrainDSAandDPModule':
 					writer.add_image('train/attention_map', vutils.make_grid(colormap(attention_map, 'viridis')), train_iteration)
 					writer.add_image('train/depth_specific_structure', vutils.make_grid(colormap(depth_specific_structure, 'viridis')), train_iteration)
 
@@ -239,10 +239,10 @@ def main():
 
 		lr = update_learning_rate(optimizer, scheduler)   
 		if (epoch+1) % 1 == 0:
-			if args.trian_stage == 'TrainStructDecoder':
+			if args.train_stage == 'TrainStructDecoder':
 				torch.save(Struct_Decoder.state_dict(), args.checkpoint_dir + 'struct_decoder_'+str(epoch+1) + ".pth")
 				torch.save(DepthNet.state_dict(), args.checkpoint_dir + 'depth_net_'+str(epoch+1) + ".pth")
-			if args.trian_stage == 'TrainDSAandDPModule':
+			if args.train_stage == 'TrainDSAandDPModule':
 				torch.save(DSAModle.state_dict(), args.checkpoint_dir + 'dsa_modle_'+str(epoch+1) + ".pth")
 				torch.save(DepthNet.state_dict(), args.checkpoint_dir + 'depth_net_'+str(epoch+1) + ".pth")
 
