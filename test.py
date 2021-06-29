@@ -87,8 +87,8 @@ def kitti_metrics_preprocess(pred, gt):
 	crop_mask = np.zeros(mask.shape)
 	crop_mask[crop[0]:crop[1],crop[2]:crop[3]] = 1
 	mask = np.logical_and(mask, crop_mask)
-	scalor = np.median(gt[mask])/np.median(pred[mask])
-	pred[mask] *= scalor
+	scalar = np.median(gt[mask])/np.median(pred[mask])
+	pred[mask] *= scalar
 
 	return pred[mask], gt[mask]
 
@@ -179,8 +179,8 @@ def nyu_metrics_preprocess(pred, gt):
 
 	mask = np.logical_and(gt > min_depth, gt < max_depth)
 
-	scalor = np.median(gt[mask])/np.median(pred[mask])
-	pred[mask] *= scalor
+	scalar = np.median(gt[mask])/np.median(pred[mask])
+	pred[mask] *= scalar
 		# gtiheight, gt_width = gt.shape
 
 	#print("gt2:", gt[mask])
