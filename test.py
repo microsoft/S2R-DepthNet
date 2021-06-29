@@ -67,7 +67,7 @@ def kitti_metrics_preprocess(pred, gt):
 	This function do some preprocessing before metrics calculation
 	- check zero value to avoid numerical problems;
 	-
-	Note that the input 'pred' and 'gt' are both 4D nparraies
+	Note that the input 'pred' and 'gt' are both 4D nparrays
 	return the corresponding image pair 
 	'''
 	# squeeze the first and last idx(which is one in test processing)
@@ -97,7 +97,7 @@ def kitti_metrics_preprocess(pred, gt):
 def kitti_compute_metrics(pred, gt):
 	"""
 	This function computes the metrics value on a pair of (pred, gt).
-	Note that the input 'pred' and 'gt' are both nparraies
+	Note that the input 'pred' and 'gt' are both nparrays
 	Return a list of result float-values which correspond to MAE, MSE, RMSE, and a1, a2, a3
 	"""
 	# test image pre-processing 
@@ -110,7 +110,7 @@ def kitti_compute_metrics(pred, gt):
 	rmse_log = (np.log(gt) - np.log(pred)) ** 2
 	rmse_log = np.sqrt(rmse_log.mean())
 
-	# compute ap accuarcy
+	# compute ap accuracy
 	thresh = np.maximum((gt/pred), (pred/gt))
 	a1 = (thresh < 1.25).mean()
 	a2 = (thresh < 1.25 ** 2).mean()
@@ -125,7 +125,7 @@ def kitti_compute_metrics(pred, gt):
 def nyu_compute_metrics(pred, gt):
 	"""
 	This function computes the metrics value on a pair of (pred, gt).
-	Note that the input 'pred' and 'gt' are both nparraies
+	Note that the input 'pred' and 'gt' are both nparrays
 	Return a list of result float-values which correspond to MAE, MSE, RMSE, and a1, a2, a3
 	"""
 	# test image pre-processing 
@@ -143,7 +143,7 @@ def nyu_compute_metrics(pred, gt):
 	rmse_log = (np.log(gt) - np.log(pred)) ** 2
 	rmse_log = np.sqrt(rmse_log.mean())
 
-	# compute ap accuarcy
+	# compute ap accuracy
 	thresh = np.maximum((gt/pred), (pred/gt))
 	a1 = (thresh < 1.25).mean()
 	a2 = (thresh < 1.25 ** 2).mean()
@@ -162,7 +162,7 @@ def nyu_metrics_preprocess(pred, gt):
 	This function do some preprocessing before metrics calculation
 	- check zero value to avoid numerical problems;
 	-
-	Note that the input 'pred' and 'gt' are both 4D nparraies
+	Note that the input 'pred' and 'gt' are both 4D nparrays
 	return the corresponding image pair 
 	'''
 	# squeeze the first and last idx(which is one in test processing)
