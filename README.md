@@ -52,7 +52,7 @@ As an example, use the following command to train S2RDepthNet on vKITTI.<br>
 		        --batchSize 32 \
 		        --loadSize 192 640 \          
 		        --Shared_Struct_Encoder_path "the path of pretrained Struct encoder(.pth)" \
-		        --trian_stage TrainStructDecoder                  
+		        --train_stage TrainStructDecoder                  
 			
 #### *Train DSA Module and DP module*
 
@@ -63,7 +63,7 @@ As an example, use the following command to train S2RDepthNet on vKITTI.<br>
 		        --loadSize 192 640 \
 		        --Shared_Struct_Encoder_path "the path of pretrained Struct encoder(.pth)" \
 			--Struct_Decoder_path "the path of pretrained Structure decoder(.pth)" \
-		        --trian_stage TrainDSAandDPModule 
+		        --train_stage TrainDSAandDPModule 
 	
 ### Evaluation
 Use the following command to evaluate the trained S2RDepthNet on KITTI test data.<br>
